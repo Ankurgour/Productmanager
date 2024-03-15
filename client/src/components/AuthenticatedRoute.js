@@ -1,18 +1,18 @@
 import React from 'react';
-import { Route, Navigate, useNavigate } from 'react-router-dom';
-import { isAuthenticated, getUserRole } from './auth';
-const navigate  = useNavigate();
-const AuthenticatedRoute = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) =>
-      isAuthenticated() && getUserRole() === 'admin' ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/login" />
-      )
-    }
-  />
-);
+import { Navigate } from 'react-router-dom';
 
-export default AuthenticatedRoute;
+const isAuthenticated = () => {
+  const token = localStorage.getItem('token');
+  return token !== null;
+};
+const getUserRole = () => {
+  return localStorage.getItem('role');
+};
+
+const AuthenticatedElement = ({ children }) => {
+  const authenticated = isAuthenticated();
+  console.log(getUserRole());
+  return authenticated ? children: <Navigate to="/login" />;
+};
+
+export default AuthenticatedElement;

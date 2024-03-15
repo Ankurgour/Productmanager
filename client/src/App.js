@@ -1,16 +1,15 @@
 import React from 'react';
-// import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
-import { BrowserRouter as Router, Route,Routes, Navigate } from 'react-router-dom';
 import RegistrationForm from './pages/Register';
 import LoginForm from './pages/Login';
-// import AdminDashboard from './AdminDashboard';
-// import TeamMemberDashboard from './TeamMemberDashboard';
-import AuthenticatedRoute from './components/AuthenticatedRoute';
-// Placeholder components for your pages
+import AuthenticatedElement from './components/AuthenticatedRoute';
+import ProductsDisplay from './pages/Products/ProductsDisplay';
+import ProductDetail from './pages/Products/ProductsDetail';
 
-const Dashboard = () => <div>Dashboard Page</div>;
-const ProductDetail = () => <div>Product Detail Page</div>;
+// Placeholder components for your pages
+const Dashboard = () => <ProductsDisplay />
+// const ProductDetail = () => <div>Product Detail Page</div>;
 const Profile = () => <div>Profile Page</div>;
 const MySubmissions = () => <div>My Submissions Page</div>;
 const PendingRequests = () => <div>Pending Requests Page</div>;
@@ -23,12 +22,14 @@ function App() {
         <Routes>
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginForm />} />
-          <AuthenticatedRoute path="/dashboard" element={<Dashboard />} />
-          <AuthenticatedRoute path="/product/:product_id" element={<ProductDetail />} />
-          <AuthenticatedRoute path="/profile" element={<Profile />} />
-          <AuthenticatedRoute path="/profile/my-submissions" element={<MySubmissions />} />
-          <AuthenticatedRoute path="/pending-requests" element={<PendingRequests />} />
-          <AuthenticatedRoute path="/pending-requests/:request_id" element={<RequestDetail />} />
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/dashboard" element={<AuthenticatedElement><ProductsDisplay/></AuthenticatedElement>} />
+          <Route path="/product/:id" element={<AuthenticatedElement><ProductDetail /></AuthenticatedElement>} />
+          <Route path="/profile" element={<AuthenticatedElement><Profile /></AuthenticatedElement>} />
+          <Route path="/profile/my-submissions" element={<AuthenticatedElement><MySubmissions /></AuthenticatedElement>} />
+          <Route path="/pending-requests" element={<AuthenticatedElement><PendingRequests /></AuthenticatedElement>} />
+          <Route path="/pending-requests/:request_id" element={<AuthenticatedElement><RequestDetail /></AuthenticatedElement>} /> 
+          <Route path="/" element={<Navigate to="/dashboard" />} />
         </Routes>
       </Router>
     </div>
